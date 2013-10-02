@@ -1,0 +1,5 @@
+F:\Documents\AsterNet\Asterisk.2013\Asterisk.NET\bin\Debug\Asterisk.NET.dll
+F:\Documents\AsterNet\Asterisk.2013\Asterisk.NET\bin\Debug\Asterisk.NET.pdb
+F:\Documents\AsterNet\Asterisk.2013\Asterisk.NET\obj\Debug\Asterisk.NET.csprojResolveAssemblyReference.cache
+F:\Documents\AsterNet\Asterisk.2013\Asterisk.NET\obj\Debug\Asterisk.NET.dll
+F:\Documents\AsterNet\Asterisk.2013\Asterisk.NET\obj\Debug\Asterisk.NET.pdb
