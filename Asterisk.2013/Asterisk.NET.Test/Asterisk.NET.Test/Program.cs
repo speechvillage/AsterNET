@@ -141,10 +141,14 @@ Ctrl-C to exit");
 			manager.UserEvents += new UserEventHandler(dam_UserEvents);
 
 			// Dont't display this event
-			manager.NewExten += new NewExtenEventHandler(manager_IgnoreEvent);
+			//manager.NewExten += new NewExtenEventHandler(manager_IgnoreEvent);
+            manager.NewExten += new NewExtenEventHandler(manager_HandleNewExtentEvent);
 
 			// Display all other
 			manager.UnhandledEvent += new ManagerEventHandler(dam_Events);
+
+            // Handle the response from AGI Exec
+		    manager.AGIExec += new AGIExecHandler(manager_AgiEvent);
 
 			// +++ Only to debug purpose
 			manager.FireAllEvents = true;
@@ -202,7 +206,7 @@ Ctrl-C to exit");
 
 			OriginateAction oc = new OriginateAction();
 			oc.Context = ORIGINATE_CONTEXT;
-			oc.Priority = 1;
+			oc.Priority = "1"; // can be int in quotes or also be a label specified in the dial plan
 			oc.Channel = ORIGINATE_CHANNEL;
 			oc.CallerId = ORIGINATE_CALLERID;
 			oc.Exten = ORIGINATE_EXTEN;
@@ -351,6 +355,24 @@ Ctrl-C to exit");
 
 			manager.Logoff();
 		}
+
+	    private static void manager_AgiEvent(object sender, AGIExecEvent e)
+	    {
+            if (e.SubEvent == "End" && e.Command.StartsWith("EXEC playback"))
+            {
+                Console.WriteLine("+++++++++++++++ manager_AgiEvent In e.SubEvent == End && e.Command.StartsWith(STREAM FILE)");
+                Console.WriteLine("Command: " + e.Command + " SubEvent: " + e.SubEvent);
+            }
+	    }
+        private static void manager_HandleNewExtentEvent(object sender, NewExtenEvent e)
+        {
+            if (e.Context == "demoagiaction")
+            {
+                var playTtMonkeyAgiAction = new AgiAction(e.Channel, "EXEC playback tt-monkeys");
+                //var answerAgiAction = new AgiAction(e.Channel, "STREAM FILE tt-monkeys"); // can also be used with other commands
+                manager.SendAction(playTtMonkeyAgiAction, 30000);
+            }
+        }
 
 		static void manager_IgnoreEvent(object sender, NewExtenEvent e)
 		{

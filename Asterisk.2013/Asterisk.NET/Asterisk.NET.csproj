@@ -127,6 +127,7 @@
     <Compile Include="Manager\Action\AgentCallbackLoginAction.cs" />
     <Compile Include="Manager\Action\AgentLogoffAction.cs" />
     <Compile Include="Manager\Action\AgentsAction.cs" />
+    <Compile Include="Manager\Action\AgiAction.cs" />
     <Compile Include="Manager\Action\ChallengeAction.cs" />
     <Compile Include="Manager\Action\ChangeMonitorAction.cs" />
     <Compile Include="Manager\Action\CommandAction.cs" />
