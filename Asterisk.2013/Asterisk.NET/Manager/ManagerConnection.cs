@@ -83,7 +83,7 @@ namespace Asterisk.NET.Manager
     public delegate void ConnectionStateEventHandler(object sender, Event.ConnectionStateEvent e);
     public delegate void VarSetEventHandler(object sender, Event.VarSetEvent e);
     public delegate void AGIExecHandler(object sender, Event.AGIExecEvent e);
-
+    public delegate void LocalBridgeHandler(object sender, Event.LocalBridgeEvent e);
     #endregion
 
     /// <summary>
@@ -426,6 +426,11 @@ namespace Asterisk.NET.Manager
         /// </summary>
         public event AGIExecHandler AGIExec;
 
+        /// <summary>
+        /// LocalBridge event
+        /// </summary>
+        public event LocalBridgeHandler LocalBridge;
+
         #endregion
 
         #region Constructor - ManagerConnection()
@@ -520,7 +525,7 @@ namespace Asterisk.NET.Manager
 
             Helper.RegisterEventHandler(registeredEventHandlers, 70, typeof(VarSetEvent));
             Helper.RegisterEventHandler(registeredEventHandlers, 80, typeof(AGIExecEvent));
-
+            Helper.RegisterEventHandler(registeredEventHandlers, 81, typeof(LocalBridgeEvent));
 
             #endregion
 
@@ -1078,7 +1083,13 @@ namespace Asterisk.NET.Manager
                             AGIExec(this, (AGIExecEvent)e);
                         }
                         break;
+                    case 81:
+                        if (LocalBridge != null)
+                        {
+                            LocalBridge(this, (LocalBridgeEvent) e);
 
+                        }
+                        break;
                     default:
                         if (UnhandledEvent != null)
                             UnhandledEvent(this, e);
@@ -2291,7 +2302,8 @@ namespace Asterisk.NET.Manager
         private void fireEvent(ManagerEvent e)
         {
             if (enableEvents && internalEvent != null)
-                internalEvent.BeginInvoke(this, e, new AsyncCallback(eventComplete), null);
+                //internalEvent.BeginInvoke(this, e, new AsyncCallback(eventComplete), null);
+                internalEvent.Invoke(this, e);
         }
         #endregion
     }
