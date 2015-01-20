@@ -16,7 +16,24 @@ namespace Asterisk.NET.FastAGI
 			this.socket = socket;
 		}
 
-		public virtual AGIRequest ReadRequest()
+        protected virtual string DoRead()
+        {
+            return socket.ReadLine();
+        }
+
+        protected virtual AGIRequest FillRequest(List<string> lines)
+        {
+            AGIRequest request = new AGIRequest(lines);
+
+            request.LocalAddress = socket.LocalAddress;
+            request.LocalPort = socket.LocalPort;
+            request.RemoteAddress = socket.RemoteAddress;
+            request.RemotePort = socket.RemotePort;
+
+            return request;
+        }
+
+		public AGIRequest ReadRequest()
 		{
 			string line;
 			List<string> lines = new List<string>();
@@ -25,7 +42,7 @@ namespace Asterisk.NET.FastAGI
 #if LOGGER
 				logger.Info("AGIReader.ReadRequest():");
 #endif
-				while ((line = socket.ReadLine()) != null)
+				while ((line = DoRead() ) != null)
 				{
 					if (line.Length == 0)
 						break;			
@@ -40,17 +57,12 @@ namespace Asterisk.NET.FastAGI
 				throw new AGINetworkException("Unable to read request from Asterisk: " + ex.Message, ex);
 			}
 
-			AGIRequest request = new AGIRequest(lines);
-
-			request.LocalAddress = socket.LocalAddress;
-			request.LocalPort = socket.LocalPort;
-			request.RemoteAddress = socket.RemoteAddress;
-			request.RemotePort = socket.RemotePort;
+            AGIRequest request = FillRequest(lines);
 
 			return request;
 		}
 
-        public virtual AGIReply ReadReply()
+        public AGIReply ReadReply()
 		{
 			string line;
 			string badSyntax = ((int)AGIReplyStatuses.SC_INVALID_COMMAND_SYNTAX).ToString();
@@ -58,7 +70,7 @@ namespace Asterisk.NET.FastAGI
 			List<string> lines = new List<string>();
 			try
 			{
-				line = socket.ReadLine();
+				line = DoRead();
 			}
 			catch (IOException ex)
 			{
@@ -72,7 +84,7 @@ namespace Asterisk.NET.FastAGI
 			if (line.StartsWith(badSyntax))
 				try
 				{
-					while ((line = socket.ReadLine()) != null)
+                    while ((line = DoRead()) != null)
 					{
 						lines.Add(line);
 						if (line.StartsWith(badSyntax))
