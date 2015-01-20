@@ -16,7 +16,7 @@ namespace Asterisk.NET.FastAGI
 			this.socket = socket;
 		}
 
-		public AGIRequest ReadRequest()
+		public virtual AGIRequest ReadRequest()
 		{
 			string line;
 			List<string> lines = new List<string>();
@@ -49,8 +49,8 @@ namespace Asterisk.NET.FastAGI
 
 			return request;
 		}
-		
-		public AGIReply ReadReply()
+
+        public virtual AGIReply ReadReply()
 		{
 			string line;
 			string badSyntax = ((int)AGIReplyStatuses.SC_INVALID_COMMAND_SYNTAX).ToString();

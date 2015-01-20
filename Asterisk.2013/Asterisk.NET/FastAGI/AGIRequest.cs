@@ -352,6 +352,13 @@ namespace Asterisk.NET.FastAGI
 				}
 				return script;
 			}
+            /// 
+            /// Usefull when you are using SyncAGI (var agi_netwrok_script not available)
+            /// 
+            set 
+            {
+                script = value;
+            }
 		}
 		#endregion
 

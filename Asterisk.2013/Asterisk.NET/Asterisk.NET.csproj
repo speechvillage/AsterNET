@@ -66,6 +66,8 @@
     <Compile Include="Common.cs" />
     <Compile Include="FastAGI\AGIChannel.cs" />
     <Compile Include="FastAGI\AGIConnectionHandler.cs" />
+    <Compile Include="SyncAGI\AGIStdinReader.cs" />
+    <Compile Include="SyncAGI\AGIStdoWriter.cs" />
     <Compile Include="FastAGI\Exceptions\AGIException.cs" />
     <Compile Include="FastAGI\Exceptions\AGIHangupException.cs" />
     <Compile Include="FastAGI\Exceptions\AGINetworkException.cs" />
@@ -299,6 +301,7 @@
     <Compile Include="Manager\Exceptions\TimeoutException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="SyncAGI\AsteriskSyncAGI.cs" />
     <Compile Include="Util\MD5Support.cs" />
     <Compile Include="Util\ThreadClass.cs" />
     <Compile Include="Util\ThreadPool.cs" />

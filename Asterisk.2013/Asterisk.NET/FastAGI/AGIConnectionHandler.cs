@@ -1,3 +1,4 @@
+using Asterisk.NET.SyncAGI;
 using System;
 using System.IO;
 using System.Threading;
@@ -20,7 +21,14 @@ namespace Asterisk.NET.FastAGI
 		private IMappingStrategy mappingStrategy;
         private bool _SC511_CAUSES_EXCEPTION = false;
         private bool _SCHANGUP_CAUSES_EXCEPTION = false;
+        private bool isFastAGI = true;
 
+        private AGIRequest request;
+        public AGIRequest Request
+        { 
+            get { return request; } 
+            set { request = value; } 
+        }
 		#region Channel
 		/// <summary>
 		/// Returns the AGIChannel associated with the current thread.
@@ -41,24 +49,40 @@ namespace Asterisk.NET.FastAGI
 		/// </summary>
 		/// <param name="socket">the socket connection to handle.</param>
 		/// <param name="mappingStrategy">the strategy to use to determine which script to run.</param>
-        public AGIConnectionHandler(IO.SocketConnection socket, IMappingStrategy mappingStrategy, bool SC511_CAUSES_EXCEPTION, bool SCHANGUP_CAUSES_EXCEPTION)
+        public AGIConnectionHandler(IO.SocketConnection socket, IMappingStrategy mappingStrategy, bool SC511_CAUSES_EXCEPTION, bool SCHANGUP_CAUSES_EXCEPTION, bool isFastAGI = true)
 		{
 			this.socket = socket;
 			this.mappingStrategy = mappingStrategy;
             this._SC511_CAUSES_EXCEPTION = SC511_CAUSES_EXCEPTION;
             this._SCHANGUP_CAUSES_EXCEPTION = SCHANGUP_CAUSES_EXCEPTION;
+            this.isFastAGI = isFastAGI;
 		}
 		#endregion
 
 		public void Run()
 		{
+            AGIRequest realRequest = null;
 			try
 			{
-				AGIReader reader = new AGIReader(socket);
-				AGIWriter writer = new AGIWriter(socket);
-				AGIRequest request = reader.ReadRequest();
+                AGIReader reader = null;
+                AGIWriter writer = null;
+                if (isFastAGI)
+                {
+                    reader = new AGIReader(socket);
+                    writer = new AGIWriter(socket);                    
+                }
+                else
+                {
+                    reader = new AGIStdinReader();
+                    writer = new AGIStdoWriter();                    
+                }
+                realRequest = reader.ReadRequest();
+                if (!isFastAGI) {
+                    realRequest.Script = request.Script;
+                }
 				AGIChannel channel = new AGIChannel(writer, reader, this._SC511_CAUSES_EXCEPTION, this._SCHANGUP_CAUSES_EXCEPTION);
-				AGIScript script = mappingStrategy.DetermineScript(request);
+                AGIScript script = mappingStrategy.DetermineScript(realRequest);
+                    
 				Thread.SetData(AGIConnectionHandler.channel, channel);
 
 				if (script != null)
@@ -107,7 +131,8 @@ namespace Asterisk.NET.FastAGI
 			Thread.SetData(AGIConnectionHandler.channel, null);
 			try
 			{
-				socket.Close();
+                if (isFastAGI)
+				    socket.Close();
 			}
 #if LOGGER
 			catch(IOException ex)

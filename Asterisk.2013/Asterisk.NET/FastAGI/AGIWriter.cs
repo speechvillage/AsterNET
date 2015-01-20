@@ -15,7 +15,7 @@ namespace Asterisk.NET.FastAGI
 				this.socket = socket;
 		}
 
-		public void SendCommand(Command.AGICommand command)
+		public virtual void SendCommand(Command.AGICommand command)
 		{
 			string buffer = command.BuildCommand() + "\n";
 			try
