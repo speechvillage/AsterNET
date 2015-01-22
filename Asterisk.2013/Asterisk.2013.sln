@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asterisk.NET.WinForm", "Ast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asterisk.NET.Test", "Asterisk.NET.Test\Asterisk.NET.Test\Asterisk.NET.Test.csproj", "{B82B8EBF-8180-401D-8D3A-4BF7CFDB7A08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asternet_Test", "Asternet_Test\Asternet_Test.csproj", "{0F2FDBC2-D822-46AA-8581-BB324DCC0A51}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +32,6 @@ Global
 		{B82B8EBF-8180-401D-8D3A-4BF7CFDB7A08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B82B8EBF-8180-401D-8D3A-4BF7CFDB7A08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B82B8EBF-8180-401D-8D3A-4BF7CFDB7A08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F2FDBC2-D822-46AA-8581-BB324DCC0A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F2FDBC2-D822-46AA-8581-BB324DCC0A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F2FDBC2-D822-46AA-8581-BB324DCC0A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F2FDBC2-D822-46AA-8581-BB324DCC0A51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
