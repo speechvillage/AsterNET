@@ -96,8 +96,20 @@ Ctrl-C to exit");
             agi.MappingStrategy = new GeneralMappingStrategy(new List<ScriptMapping>()
             {
                 new ScriptMapping() {
-                    ScriptClass = "Asterisk.NET.Test.CustomIVR",
-                    ScriptName = "customivr"
+                    ScriptClass = "SurveyReport",
+                    ScriptName = "gol"
+                },
+                new ScriptMapping() {
+                    ScriptClass = "BadAnswer",
+                    ScriptName = "gol"
+                },
+                new ScriptMapping() {
+                    ScriptClass = "GoodAnswer",
+                    ScriptName = "globo"
+                },
+                new ScriptMapping() {
+                    ScriptClass = "HumanBotInteratcion",
+                    ScriptName = "globo"
                 }
             });
 
